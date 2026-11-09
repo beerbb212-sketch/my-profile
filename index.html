@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โปรไฟล์ของฉัน - Phase 3</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #eef2f3;
+            color: #333;
+            max-width: 450px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            background: #ffffff;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #3498db;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        .bio {
+            color: #7f8c8d;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+
+        .quote-box {
+            background: #f1f9f6;
+            border-left: 4px solid #2ecc71;
+            padding: 12px;
+            border-radius: 6px;
+            margin: 15px 0;
+            text-align: left;
+            font-style: italic;
+            color: #2c3e50;
+            font-size: 13px;
+            min-height: 40px;
+        }
+
+        .skills-list {
+            text-align: left;
+            background: #f8f9fa;
+            padding: 12px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .skills-list h3 {
+            font-size: 15px;
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .skills-list li {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 8px 14px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            margin: 3px;
+        }
+
+        .btn:hover {
+            background-color: #1d6fa5;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: #2ecc71;
+        }
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        .btn-warning {
+            background-color: #e67e22;
+        }
+        .btn-warning:hover {
+            background-color: #d35400;
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://picsum.photos/200" alt="รูปโปรไฟล์" class="profile-img">
+
+    <h1 id="name-text">charndech beer</h1>
+    <p class="bio">นักพัฒนาเว็บมือใหม่ (กำลังเรียนรู้ 1 ถึง 100 🚀)</p>
+
+    <div class="quote-box" id="quote-display">
+        💬 "ความพยายามไม่เคยทรยศใคร"
+    </div>
+
+    <div class="skills-list">
+        <h3>สิ่งที่กำลังเรียนรู้:</h3>
+        <ul>
+            <li>โครงสร้าง HTML5 & CSS3</li>
+            <li>การโต้ตอบด้วย JavaScript</li>
+            <li>ใช้งาน VS Code มืออาชีพ 🌟</li>
+        </ul>
+    </div>
+
+    <a href="https://github.com" target="_blank" class="btn">ไปที่ GitHub</a>
+    <button class="btn btn-success" onclick="sayHello()">ทักทาย 👋</button>
+    <button class="btn btn-warning" onclick="getNewQuote()">สุ่มคำคม 🔄</button>
+
+    <script>
+        function sayHello() {
+            alert("ยินดีต้อนรับสู่เว็บของ charndech beer ครับ! 🎉");
+            document.getElementById("name-text").innerText = "🔥 charndech beer (Developer สายลุย)";
+        }
+
+        const quotes = [
+            "\"ความพยายามไม่เคยทรยศใคร\"",
+            "\"เก่งไม่กลัว กลัวไม่ขยันเรียนรู้\"",
+            "\"ก้าวเล็กๆ ในทุกวัน นำไปสู่ความสำเร็จที่ยิ่งใหญ่\"",
+            "\"การเริ่มต้นคือครึ่งหนึ่งของความสำเร็จ\"",
+            "\"ไม่มีคำว่าสายเกินไปสำหรับการเรียนรู้\""
+        ];
+
+        function getNewQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById("quote-display").innerText = "💬 " + quotes[randomIndex];
+        }
+    </script>
+
+</body>
+</html>
