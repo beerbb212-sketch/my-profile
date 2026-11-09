@@ -3,150 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>โปรไฟล์ของฉัน - Phase 3</title>
+    <title>วงเหล้าสายลุย - Random Drinking Game 🍻</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #eef2f3;
-            color: #333;
-            max-width: 450px;
-            margin: 20px auto;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            margin: 0;
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-            background: #ffffff;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
         }
 
-        .profile-img {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid #3498db;
-            margin-bottom: 10px;
+        .game-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 24px;
+            padding: 35px 20px 25px 20px;
+            max-width: 450px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
         }
 
         h1 {
-            color: #2c3e50;
-            font-size: 22px;
+            font-size: 26px;
             margin-bottom: 5px;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255,204,0,0.5);
         }
 
-        .bio {
-            color: #7f8c8d;
+        .subtitle {
             font-size: 13px;
-            margin-bottom: 15px;
+            color: #ccc;
+            margin-bottom: 25px;
         }
 
-        .quote-box {
-            background: #f1f9f6;
-            border-left: 4px solid #2ecc71;
-            padding: 12px;
-            border-radius: 6px;
-            margin: 15px 0;
-            text-align: left;
-            font-style: italic;
-            color: #2c3e50;
-            font-size: 13px;
-            min-height: 40px;
-        }
-
-        .skills-list {
-            text-align: left;
-            background: #f8f9fa;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-
-        .skills-list h3 {
-            font-size: 15px;
-            margin-top: 0;
-            margin-bottom: 8px;
-        }
-
-        .skills-list li {
-            font-size: 13px;
-            margin-bottom: 5px;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 8px 14px;
-            background-color: #3498db;
-            color: white;
-            text-decoration: none;
-            border-radius: 25px;
+        /* กล่องแสดงบทลงโทษ */
+        .result-box {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px dashed #ff4757;
+            border-radius: 16px;
+            padding: 25px 15px;
+            margin-bottom: 25px;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
             font-weight: bold;
+            color: #ffffff;
+            line-height: 1.5;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        .shake {
+            animation: shake 0.3s infinite;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            40% { transform: translate(1px, -1px) rotate(-1deg); }
+            60% { transform: translate(-1px, 2px) rotate(0deg); }
+            80% { transform: translate(2px, 1px) rotate(1deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        /* จัดแถวปุ่มสุ่ม + จุดลับซ้ายขวา */
+        .btn-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        /* ปุ่มสุ่มหลัก */
+        .spin-btn {
+            background: linear-gradient(45deg, #ff4757, #ff6b81);
+            color: white;
             border: none;
+            padding: 16px 28px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 50px;
             cursor: pointer;
-            font-size: 13px;
-            transition: all 0.3s ease;
-            margin: 3px;
+            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
+            transition: all 0.2s ease;
+            width: 70%;
         }
 
-        .btn:hover {
-            background-color: #1d6fa5;
-            transform: translateY(-2px);
+        .spin-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.6);
         }
 
-        .btn-success {
-            background-color: #2ecc71;
-        }
-        .btn-success:hover {
-            background-color: #27ae60;
+        .spin-btn:active {
+            transform: scale(0.95);
         }
 
-        .btn-warning {
-            background-color: #e67e22;
+        /* จุดลับเม็ดถั่ว (ซ้ายและขวา) */
+        .secret-bean-btn {
+            width: 10px;
+            height: 10px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
         }
-        .btn-warning:hover {
-            background-color: #d35400;
+
+        .secret-bean-btn:hover {
+            background-color: rgba(255, 204, 0, 0.8);
+            transform: scale(1.4);
         }
     </style>
 </head>
 <body>
 
-    <img src="https://picsum.photos/200" alt="รูปโปรไฟล์" class="profile-img">
+    <div class="game-card">
+        <h1>🍻 เกมสุ่มวงเหล้าสายลุย</h1>
+        <p class="subtitle">กดสุ่มคำสั่ง แล้วทำตามบทลงโทษทันที!</p>
 
-    <h1 id="name-text">charndech beer</h1>
-    <p class="bio">นักพัฒนาเว็บมือใหม่ (กำลังเรียนรู้ 1 ถึง 100 🚀)</p>
+        <!-- กล่องแสดงคำสั่ง -->
+        <div class="result-box" id="result-box">
+            กดปุ่มด้านล่างเพื่อเริ่มสุ่ม! 👇
+        </div>
 
-    <div class="quote-box" id="quote-display">
-        💬 "ความพยายามไม่เคยทรยศใคร"
+        <!-- แผงปุ่ม: จุดซ้าย (คนซ้ายกิน) + ปุ่มสุ่มหลัก + จุดขวา (ตัวตายตัวแทน) -->
+        <div class="btn-wrapper">
+            <div class="secret-bean-btn" onclick="triggerLeftDrink()" title=""></div>
+            <button class="spin-btn" onclick="spinGame()">สุ่มคำสั่ง 🎲</button>
+            <div class="secret-bean-btn" onclick="triggerVictim()" title=""></div>
+        </div>
     </div>
-
-    <div class="skills-list">
-        <h3>สิ่งที่กำลังเรียนรู้:</h3>
-        <ul>
-            <li>โครงสร้าง HTML5 & CSS3</li>
-            <li>การโต้ตอบด้วย JavaScript</li>
-            <li>ใช้งาน VS Code มืออาชีพ 🌟</li>
-        </ul>
-    </div>
-
-    <a href="https://github.com" target="_blank" class="btn">ไปที่ GitHub</a>
-    <button class="btn btn-success" onclick="sayHello()">ทักทาย 👋</button>
-    <button class="btn btn-warning" onclick="getNewQuote()">สุ่มคำคม 🔄</button>
 
     <script>
-        function sayHello() {
-            alert("ยินดีต้อนรับสู่เว็บของ charndech beer ครับ! 🎉");
-            document.getElementById("name-text").innerText = "🔥 charndech beer (Developer สายลุย)";
-        }
-
-        const quotes = [
-            "\"ความพยายามไม่เคยทรยศใคร\"",
-            "\"เก่งไม่กลัว กลัวไม่ขยันเรียนรู้\"",
-            "\"ก้าวเล็กๆ ในทุกวัน นำไปสู่ความสำเร็จที่ยิ่งใหญ่\"",
-            "\"การเริ่มต้นคือครึ่งหนึ่งของความสำเร็จ\"",
-            "\"ไม่มีคำว่าสายเกินไปสำหรับการเรียนรู้\""
+        // รายชื่อคำสั่งหลัก 8 รายการ
+        const drinkingRules = [
+            "🍺 ซ้ายมือกิน!",
+            "🍻 ขวามือกิน!",
+            "💀 หมดแก้วทันที ไม่ต้องพูดเยอะ!",
+            "😴 รอดตัวไป พัก 1 รอบ",
+            "👑 หาตัวตายตัวแทน",
+            "🤝 ชนแก้วกับคนซ้ายมือ",
+            "🤝 ชนแก้วกับคนขวามือ",
+            "🕶️ ตรงข้ามกิน"
         ];
 
-        function getNewQuote() {
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById("quote-display").innerText = "💬 " + quotes[randomIndex];
+        // ฟังก์ชันสุ่มเกมปกติ
+        function spinGame() {
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('shake');
+            resultBox.style.color = "#ff4757";
+            resultBox.innerText = "กำลังสุ่ม... 🎲";
+
+            setTimeout(() => {
+                resultBox.classList.remove('shake');
+                const randomIndex = Math.floor(Math.random() * drinkingRules.length);
+                resultBox.style.color = "#ffffff";
+                resultBox.innerText = drinkingRules[randomIndex];
+            }, 600);
+        }
+
+        // ฟังก์ชันแอบกดจุดซ้าย ออก "🍺 ซ้ายมือกิน!"
+        function triggerLeftDrink() {
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('shake');
+            resultBox.style.color = "#ffcc00";
+            
+            setTimeout(() => {
+                resultBox.classList.remove('shake');
+                resultBox.style.color = "#ffffff";
+                resultBox.innerText = "🍺 ซ้ายมือกิน!";
+            }, 300);
+        }
+
+        // ฟังก์ชันแอบกดจุดขวา ออก "👑 หาตัวตายตัวแทน"
+        function triggerVictim() {
+            const resultBox = document.getElementById('result-box');
+            resultBox.classList.add('shake');
+            resultBox.style.color = "#ffcc00";
+            
+            setTimeout(() => {
+                resultBox.classList.remove('shake');
+                resultBox.style.color = "#ffffff";
+                resultBox.innerText = "👑 หาตัวตายตัวแทน";
+            }, 300);
         }
     </script>
 
