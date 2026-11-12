@@ -3,66 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>วงเหล้าสายลุย - Random Drinking Game 🍻</title>
+    <title>Gaming & Drinking Party - 5 Games 🎮🍺</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: radial-gradient(circle at top, #1f1c44 0%, #0d0b21 100%);
             min-height: 100vh;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             color: #fff;
+            overflow-x: hidden;
+            position: relative;
         }
 
-        .game-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px;
-            padding: 35px 20px 25px 20px;
-            max-width: 450px;
+        .bg-icons {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
         }
 
-        h1 {
-            font-size: 26px;
-            margin-bottom: 5px;
-            color: #ffcc00;
-            text-shadow: 0 0 10px rgba(255,204,0,0.5);
+        .bg-icon {
+            position: absolute;
+            font-size: 46px;
+            opacity: 0.13;
+            animation: float 6s ease-in-out infinite;
         }
 
-        .subtitle {
-            font-size: 13px;
-            color: #ccc;
-            margin-bottom: 25px;
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(12deg); }
         }
 
-        /* กล่องแสดงบทลงโทษ */
-        .result-box {
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px dashed #ff4757;
-            border-radius: 16px;
-            padding: 25px 15px;
-            margin-bottom: 25px;
-            min-height: 90px;
+        /* ================== หน้าที่ 1: หน้าปกเต็มจอ ================== */
+        .landing-screen {
+            position: relative;
+            z-index: 1;
+            width: 100vw;
+            height: 100vh;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero-graphic {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+
+        .icon-badge {
+            font-size: 68px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            width: 115px;
+            height: 115px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 30px;
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .icon-badge:hover { transform: scale(1.08); }
+        .icon-badge.gamepad { border-color: rgba(0, 242, 254, 0.65); box-shadow: 0 0 25px rgba(0, 242, 254, 0.35); }
+        .icon-badge.beer { border-color: rgba(255, 204, 0, 0.65); box-shadow: 0 0 25px rgba(255, 204, 0, 0.35); }
+        .plus-sign { font-size: 32px; font-weight: bold; color: #ff4757; }
+
+        .landing-title {
+            font-size: 36px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(90deg, #00f2fe, #ffcc00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .landing-sub {
+            font-size: 16px;
+            color: #b0b3d6;
+            margin: 0 0 40px 0;
+        }
+
+        .enter-btn {
+            background: linear-gradient(45deg, #00f2fe, #4facfe);
+            color: #0d0b21;
+            border: none;
+            padding: 18px 48px;
+            font-size: 22px;
+            font-weight: 800;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.45);
+            transition: all 0.25s ease;
+        }
+
+        .enter-btn:hover { transform: scale(1.06); box-shadow: 0 14px 38px rgba(0, 242, 254, 0.7); }
+        .enter-btn:active { transform: scale(0.95); }
+
+        /* ================== หน้าที่ 2: เมนูเลือก 5 เกม (แยกสีตามเอกลักษณ์เกม) ================== */
+        .menu-screen {
+            display: none;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 440px;
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .menu-title {
+            font-size: 26px;
+            margin: 0 0 6px 0;
+            color: #ffcc00;
+            text-shadow: 0 0 10px rgba(255, 204, 0, 0.4);
+        }
+
+        .menu-sub {
+            font-size: 13px;
+            color: #b0b3d6;
+            margin-bottom: 20px;
+        }
+
+        .games-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .game-tile {
+            background: rgba(25, 23, 52, 0.8);
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            text-align: left;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+
+        /* ธีมสีเฉพาะแต่ละเกมในหน้าเมนู */
+        .game-tile.theme-1 { border: 1.5px solid rgba(0, 242, 254, 0.4); }
+        .game-tile.theme-1:hover { border-color: #00f2fe; box-shadow: 0 12px 30px rgba(0, 242, 254, 0.3); }
+
+        .game-tile.theme-2 { border: 1.5px solid rgba(46, 213, 115, 0.4); }
+        .game-tile.theme-2:hover { border-color: #2ed573; box-shadow: 0 12px 30px rgba(46, 213, 115, 0.3); }
+
+        .game-tile.theme-3 { border: 1.5px solid rgba(255, 71, 87, 0.4); }
+        .game-tile.theme-3:hover { border-color: #ff4757; box-shadow: 0 12px 30px rgba(255, 71, 87, 0.3); }
+
+        .game-tile.theme-4 { border: 1.5px solid rgba(165, 94, 234, 0.4); }
+        .game-tile.theme-4:hover { border-color: #a55eea; box-shadow: 0 12px 30px rgba(165, 94, 234, 0.3); }
+
+        .game-tile.theme-5 { border: 1.5px solid rgba(255, 165, 2, 0.4); }
+        .game-tile.theme-5:hover { border-color: #ffa502; box-shadow: 0 12px 30px rgba(255, 165, 2, 0.3); }
+
+        .game-tile:hover { transform: translateY(-3px); }
+        .game-tile:active { transform: scale(0.97); }
+        .tile-icon { font-size: 34px; flex-shrink: 0; }
+        .tile-info { display: flex; flex-direction: column; gap: 4px; }
+        .tile-name { font-size: 16px; font-weight: bold; color: #fff; }
+        .tile-desc { font-size: 11px; color: #aaa; }
+
+        /* ================== หน้าต่างเล่นเกมแต่ละเกม ================== */
+        .game-container {
+            display: none;
+            position: relative;
+            z-index: 1;
+            background: rgba(25, 23, 52, 0.9);
+            backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 22px 18px 26px 18px;
+            max-width: 450px;
+            width: 94%;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75);
+        }
+
+        #game-1 { border: 2px solid rgba(0, 242, 254, 0.45); }
+        #game-2 { border: 2px solid rgba(46, 213, 115, 0.45); }
+        #game-3 { border: 2px solid rgba(255, 71, 87, 0.45); }
+        #game-4 { border: 2px solid rgba(165, 94, 234, 0.45); }
+        #game-5 { border: 2px solid rgba(255, 165, 2, 0.45); }
+
+        .top-bar {
+            display: flex;
+            justify-content: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .back-btn:hover { background: rgba(255, 255, 255, 0.25); }
+
+        .game-container h2 {
+            font-size: 22px;
+            margin: 4px 0 6px 0;
+            color: #ffcc00;
+        }
+
+        .game-sub {
+            font-size: 13px;
+            color: #b0b3d6;
+            margin-bottom: 18px;
+        }
+
+        .result-box {
+            background: rgba(10, 9, 24, 0.7);
+            border: 2px dashed #00f2fe;
+            border-radius: 18px;
+            padding: 25px 15px;
+            margin-bottom: 22px;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-size: 20px;
             font-weight: bold;
             color: #ffffff;
             line-height: 1.5;
-            transition: transform 0.1s ease-in-out;
         }
 
-        .shake {
-            animation: shake 0.3s infinite;
-        }
+        .shake { animation: shake 0.3s infinite; }
 
         @keyframes shake {
             0% { transform: translate(1px, 1px) rotate(0deg); }
@@ -73,7 +267,30 @@
             100% { transform: translate(1px, -2px) rotate(-1deg); }
         }
 
-        /* จัดแถวปุ่มสุ่ม + จุดลับซ้ายขวา */
+        /* ปุ่มกดจำแนกสีตามธีมเกม */
+        .action-btn {
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            font-size: 17px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            width: 72%;
+        }
+
+        #game-1 .action-btn { background: linear-gradient(45deg, #00f2fe, #4facfe); box-shadow: 0 8px 25px rgba(0, 242, 254, 0.45); }
+        #game-2 .action-btn { background: linear-gradient(45deg, #2ed573, #7bed9f); box-shadow: 0 8px 25px rgba(46, 213, 115, 0.45); color: #0d0b21; }
+        #game-3 .action-btn { background: linear-gradient(45deg, #ff4757, #ff6b81); box-shadow: 0 8px 25px rgba(255, 71, 87, 0.45); }
+        #game-4 .action-btn { background: linear-gradient(45deg, #a55eea, #d980fa); box-shadow: 0 8px 25px rgba(165, 94, 234, 0.45); }
+        #game-5 .action-btn { background: linear-gradient(45deg, #ffa502, #fffa65); box-shadow: 0 8px 25px rgba(255, 165, 2, 0.45); color: #0d0b21; }
+
+        .action-btn:hover { transform: scale(1.03); }
+        .action-btn:active { transform: scale(0.95); }
+        .action-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        /* ปุ่มลับซ้าย-ขวา พรางเนียนกริบแต่กดง่าย */
         .btn-wrapper {
             display: flex;
             align-items: center;
@@ -81,68 +298,382 @@
             gap: 12px;
         }
 
-        /* ปุ่มสุ่มหลัก */
-        .spin-btn {
-            background: linear-gradient(45deg, #ff4757, #ff6b81);
-            color: white;
-            border: none;
-            padding: 16px 28px;
-            font-size: 20px;
-            font-weight: bold;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4);
-            transition: all 0.2s ease;
-            width: 70%;
-        }
-
-        .spin-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 30px rgba(255, 71, 87, 0.6);
-        }
-
-        .spin-btn:active {
-            transform: scale(0.95);
-        }
-
-        /* จุดลับเม็ดถั่ว (ซ้ายและขวา) */
         .secret-bean-btn {
-            width: 10px;
-            height: 10px;
-            background-color: rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
+            width: 28px;
+            height: 36px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             cursor: pointer;
-            transition: all 0.2s ease;
             flex-shrink: 0;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
-        .secret-bean-btn:hover {
-            background-color: rgba(255, 204, 0, 0.8);
-            transform: scale(1.4);
+        .secret-bean-btn::after {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        /* สไตล์เฉพาะเกมที่ 2: หมุนขวด */
+        .bottle-stage {
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            background: rgba(10, 9, 24, 0.5);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bottle-icon {
+            font-size: 90px;
+            display: inline-block;
+            transition: transform 3s cubic-bezier(0.15, 0.85, 0.25, 1);
+            user-select: none;
+        }
+
+        /* ================== สไตล์เฉพาะเกมที่ 3: ไพ่จริง ================== */
+        .card-stage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 22px;
+        }
+
+        .playing-card {
+            width: 145px;
+            height: 205px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.65);
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            user-select: none;
+            border: 3px solid #e2e8f0;
+            transition: transform 0.25s ease;
+        }
+
+        .playing-card.card-back {
+            background: repeating-linear-gradient(
+                45deg,
+                #c0392b,
+                #c0392b 10px,
+                #962d22 10px,
+                #962d22 20px
+            );
+            border: 5px solid #ffffff;
+        }
+
+        .playing-card.card-back::after {
+            content: "🍻";
+            font-size: 46px;
+            background: rgba(0, 0, 0, 0.25);
+            width: 76px;
+            height: 76px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .card-red { color: #d63031; }
+        .card-black { color: #1e272e; }
+
+        .card-corner {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .card-corner.top-left { top: 10px; left: 12px; }
+        .card-corner.bottom-right { bottom: 10px; right: 12px; transform: rotate(180deg); }
+        .corner-val { font-size: 22px; }
+        .corner-suit { font-size: 18px; margin-top: 2px; }
+        .card-center-suit { font-size: 68px; line-height: 1; }
+
+        .card-rule-text {
+            background: rgba(10, 9, 24, 0.75);
+            border: 1.5px dashed #ff4757;
+            border-radius: 14px;
+            padding: 14px 16px;
+            width: 100%;
+            font-size: 17px;
+            font-weight: bold;
+            color: #fff;
+            min-height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+
+        /* ================== สไตล์เฉพาะเกมที่ 4: ทอยลูกเต๋า 2 ลูก ================== */
+        .dice-stage {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            padding: 24px 10px;
+            margin-bottom: 24px;
+            background: rgba(10, 9, 24, 0.55);
+            border-radius: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dice-box {
+            width: 96px;
+            height: 96px;
+            background: linear-gradient(145deg, #ffffff, #e6e9ef);
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), inset 0 -4px 8px rgba(0,0,0,0.15);
+            padding: 14px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 4px;
+            user-select: none;
+        }
+
+        .pip {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        .pip.active {
+            background: #1e272e;
+            box-shadow: inset 0 2px 3px rgba(0,0,0,0.5);
+        }
+
+        .pip.active.red-pip {
+            background: #d63031;
+        }
+
+        .dice-roll-anim {
+            animation: diceSpin 0.15s infinite linear;
+        }
+
+        @keyframes diceSpin {
+            0% { transform: rotate(0deg) scale(1.05); }
+            25% { transform: rotate(12deg) scale(0.95); }
+            50% { transform: rotate(0deg) scale(1.05); }
+            75% { transform: rotate(-12deg) scale(0.95); }
+            100% { transform: rotate(0deg) scale(1.05); }
+        }
+
+        /* ================== สไตล์เฉพาะเกมที่ 5: วงล้อเสี่ยงโชค (ไร้ฐาน) ================== */
+        .wheel-stage {
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            background: transparent;
+            position: relative;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: 2px;
+            font-size: 24px;
+            z-index: 2;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            color: #ffa502;
+        }
+
+        .wheel-box {
+            font-size: 85px;
+            display: inline-block;
+            transition: transform 3s cubic-bezier(0.15, 0.85, 0.25, 1);
+            user-select: none;
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.5));
         }
     </style>
 </head>
 <body>
 
-    <div class="game-card">
-        <h1>🍻 เกมสุ่มวงเหล้าสายลุย</h1>
-        <p class="subtitle">กดสุ่มคำสั่ง แล้วทำตามบทลงโทษทันที!</p>
+    <div class="bg-icons">
+        <div class="bg-icon" style="top: 8%; left: 10%; animation-delay: 0s;">🎮</div>
+        <div class="bg-icon" style="top: 15%; right: 12%; animation-delay: 1s;">🍺</div>
+        <div class="bg-icon" style="bottom: 14%; left: 15%; animation-delay: 2s;">🍻</div>
+        <div class="bg-icon" style="bottom: 18%; right: 10%; animation-delay: 1.5s;">🕹️</div>
+        <div class="bg-icon" style="top: 48%; left: 6%; animation-delay: 0.5s;">🍾</div>
+        <div class="bg-icon" style="top: 52%; right: 6%; animation-delay: 2.5s;">🎮</div>
+    </div>
 
-        <!-- กล่องแสดงคำสั่ง -->
-        <div class="result-box" id="result-box">
-            กดปุ่มด้านล่างเพื่อเริ่มสุ่ม! 👇
+    <!-- หน้าที่ 1: หน้าปกเต็มจอ -->
+    <div class="landing-screen" id="landing-screen">
+        <div class="hero-graphic">
+            <div class="icon-badge gamepad">🎮</div>
+            <div class="plus-sign">×</div>
+            <div class="icon-badge beer">🍺</div>
+        </div>
+        <h1 class="landing-title">GAMING & CHILL</h1>
+        <p class="landing-sub">รวม 5 เกมวงเหล้าสายลุย เลือกเล่นได้ทั้งคืน 🍻</p>
+        <button class="enter-btn" onclick="goToMenu()">เข้าเกมส์ 🚀</button>
+    </div>
+
+    <!-- หน้าที่ 2: เมนูเลือก 5 เกม -->
+    <div class="menu-screen" id="menu-screen">
+        <h2 class="menu-title">🎮 เลือกเกมวงเหล้า (5 เกม)</h2>
+        <p class="menu-sub">จิ้มเลือกโหมดที่ต้องการเล่นได้เลย!</p>
+
+        <div class="games-list">
+            <div class="game-tile theme-1" onclick="openGame(1)">
+                <div class="tile-icon">🎰</div>
+                <div class="tile-info">
+                    <div class="tile-name">1. สุ่มคำสั่งวงเหล้า</div>
+                    <div class="tile-desc">ซ้ายกิน ขวากิน หมดแก้ว หาตัวตายตัวแทน</div>
+                </div>
+            </div>
+            <div class="game-tile theme-2" onclick="openGame(2)">
+                <div class="tile-icon">🍾</div>
+                <div class="tile-info">
+                    <div class="tile-name">2. หมุนขวดวัดดวง</div>
+                    <div class="tile-desc">วางมือถือกลางวง ปากขวดชี้ใครคนนั้นยก!</div>
+                </div>
+            </div>
+            <div class="game-tile theme-3" onclick="openGame(3)">
+                <div class="tile-icon">🃏</div>
+                <div class="tile-info">
+                    <div class="tile-name">3. ไพ่สั่งดื่ม (King's Cup)</div>
+                    <div class="tile-desc">เปิดไพ่ป๊อกจริงลุ้นกติกาทั้ง 52 ใบ</div>
+                </div>
+            </div>
+            <div class="game-tile theme-4" onclick="openGame(4)">
+                <div class="tile-icon">🎲</div>
+                <div class="tile-info">
+                    <div class="tile-name">4. ทอยลูกเต๋า 2 ลูก</div>
+                    <div class="tile-desc">ทอยลูกเต๋า วัดแต้มสูง-ต่ำลุ้นแต้มกันสดๆ</div>
+                </div>
+            </div>
+            <div class="game-tile theme-5" onclick="openGame(5)">
+                <div class="tile-icon">🎡</div>
+                <div class="tile-info">
+                    <div class="tile-name">5. วงล้อเสี่ยงโชค</div>
+                    <div class="tile-desc">หมุนวงล้อลุ้นบทลงโทษสุดเร้าใจประจำรอบ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- เกมที่ 1: สุ่มคำสั่งวงเหล้า -->
+    <div class="game-container" id="game-1">
+        <div class="top-bar"><button class="back-btn" onclick="backToMenu()">⬅ กลับหน้าเลือกเกม</button></div>
+        <h2>🎰 สุ่มคำสั่งวงเหล้า</h2>
+        <p class="game-sub">กดสุ่มคำสั่ง แล้วทำตามทันที!</p>
+        <div class="result-box" id="result-1" style="border-color: #00f2fe;">พร้อมลุยหรือยัง? กดสุ่มเลย! 👇</div>
+        <div class="btn-wrapper">
+            <div class="secret-bean-btn" onclick="triggerLeftDrink()"></div>
+            <button class="action-btn" onclick="spinGame1()">สุ่มคำสั่ง 🎰</button>
+            <div class="secret-bean-btn" onclick="triggerVictim()"></div>
+        </div>
+    </div>
+
+    <!-- เกมที่ 2: หมุนขวดวัดดวง -->
+    <div class="game-container" id="game-2">
+        <div class="top-bar"><button class="back-btn" onclick="backToMenu()">⬅ กลับหน้าเลือกเกม</button></div>
+        <h2>🍾 หมุนขวดวัดดวง</h2>
+        <p class="game-sub">วางมือถือกลางวง แล้วกดหมุนขวด!</p>
+        <div class="bottle-stage">
+            <div class="bottle-icon" id="bottle">🍾</div>
+        </div>
+        <button class="action-btn" onclick="spinBottle()">หมุนขวด! 🔄</button>
+    </div>
+
+    <!-- เกมที่ 3: ไพ่สั่งดื่ม -->
+    <div class="game-container" id="game-3">
+        <div class="top-bar"><button class="back-btn" onclick="backToMenu()">⬅ กลับหน้าเลือกเกม</button></div>
+        <h2>🃏 ไพ่สั่งดื่ม (King's Cup)</h2>
+        <p class="game-sub">ผลัดกันกดเปิดไพ่คนละ 1 ใบ</p>
+        
+        <div class="card-stage">
+            <div class="playing-card card-back" id="real-card"></div>
+            <div class="card-rule-text" id="card-rule">กดปุ่มด้านล่างเพื่อเปิดไพ่ 👇</div>
         </div>
 
-        <!-- แผงปุ่ม: จุดซ้าย (คนซ้ายกิน) + ปุ่มสุ่มหลัก + จุดขวา (ตัวตายตัวแทน) -->
         <div class="btn-wrapper">
-            <div class="secret-bean-btn" onclick="triggerLeftDrink()" title=""></div>
-            <button class="spin-btn" onclick="spinGame()">สุ่มคำสั่ง 🎲</button>
-            <div class="secret-bean-btn" onclick="triggerVictim()" title=""></div>
+            <div class="secret-bean-btn" onclick="triggerCardQ()"></div>
+            <button class="action-btn" onclick="drawCard()">จั่วไพ่ 🃏</button>
+            <div class="secret-bean-btn" onclick="triggerCardJ()"></div>
+        </div>
+    </div>
+
+    <!-- เกมที่ 4: ทอยลูกเต๋า 2 ลูก -->
+    <div class="game-container" id="game-4">
+        <div class="top-bar"><button class="back-btn" onclick="backToMenu()">⬅ กลับหน้าเลือกเกม</button></div>
+        <h2>🎲 ทอยลูกเต๋า 2 ลูก</h2>
+        <p class="game-sub">ผลัดกันกดทอยลูกเต๋า ลุ้นแต้มสะใจ!</p>
+
+        <div class="dice-stage">
+            <div class="dice-box" id="dice-1"></div>
+            <div class="dice-box" id="dice-2"></div>
+        </div>
+
+        <div class="btn-wrapper">
+            <div class="secret-bean-btn" onclick="rollDice('high')"></div>
+            <button class="action-btn" id="dice-btn" onclick="rollDice('normal')">ทอยลูกเต๋า 🎲</button>
+            <div class="secret-bean-btn" onclick="rollDice('low')"></div>
+        </div>
+    </div>
+
+    <!-- เกมที่ 5: วงล้อเสี่ยงโชค -->
+    <div class="game-container" id="game-5">
+        <div class="top-bar"><button class="back-btn" onclick="backToMenu()">⬅ กลับหน้าเลือกเกม</button></div>
+        <h2>🎡 วงล้อเสี่ยงโชค</h2>
+        <p class="game-sub">หมุนวงล้อลุ้นชะตากรรมรอบนี้!</p>
+
+        <div class="wheel-stage">
+            <div class="wheel-pointer">▼</div>
+            <div class="wheel-box" id="wheel">🎡</div>
+        </div>
+
+        <div class="result-box" id="result-5" style="border-color: #ffa502; min-height: 80px; padding: 15px; margin-bottom: 18px; font-size: 18px;">พร้อมแล้วกดหมุนวงล้อเลย! 👇</div>
+
+        <div class="btn-wrapper">
+            <div class="secret-bean-btn" onclick="triggerWheelSecret('shot')"></div>
+            <button class="action-btn" id="wheel-btn" onclick="spinWheel()">หมุนวงล้อ! 🎡</button>
+            <div class="secret-bean-btn" onclick="triggerWheelSecret('safe')"></div>
         </div>
     </div>
 
     <script>
-        // รายชื่อคำสั่งหลัก 8 รายการ
+        function goToMenu() {
+            document.getElementById('landing-screen').style.display = 'none';
+            document.getElementById('menu-screen').style.display = 'block';
+        }
+
+        function openGame(num) {
+            document.getElementById('menu-screen').style.display = 'none';
+            document.getElementById('game-' + num).style.display = 'block';
+            if (num === 4) {
+                renderDiceFace('dice-1', 6);
+                renderDiceFace('dice-2', 6);
+            }
+        }
+
+        function backToMenu() {
+            for (let i = 1; i <= 5; i++) {
+                document.getElementById('game-' + i).style.display = 'none';
+            }
+            document.getElementById('menu-screen').style.display = 'block';
+        }
+
+        // ================= เกมที่ 1 =================
         const drinkingRules = [
             "🍺 ซ้ายมือกิน!",
             "🍻 ขวามือกิน!",
@@ -154,47 +685,239 @@
             "🕶️ ตรงข้ามกิน"
         ];
 
-        // ฟังก์ชันสุ่มเกมปกติ
-        function spinGame() {
-            const resultBox = document.getElementById('result-box');
-            resultBox.classList.add('shake');
-            resultBox.style.color = "#ff4757";
-            resultBox.innerText = "กำลังสุ่ม... 🎲";
-
+        function spinGame1() {
+            const box = document.getElementById('result-1');
+            box.classList.add('shake');
+            box.style.color = "#00f2fe";
+            box.innerText = "กำลังสุ่ม... 🎰";
             setTimeout(() => {
-                resultBox.classList.remove('shake');
-                const randomIndex = Math.floor(Math.random() * drinkingRules.length);
-                resultBox.style.color = "#ffffff";
-                resultBox.innerText = drinkingRules[randomIndex];
+                box.classList.remove('shake');
+                const idx = Math.floor(Math.random() * drinkingRules.length);
+                box.style.color = "#ffffff";
+                box.innerText = drinkingRules[idx];
             }, 600);
         }
 
-        // ฟังก์ชันแอบกดจุดซ้าย ออก "🍺 ซ้ายมือกิน!"
         function triggerLeftDrink() {
-            const resultBox = document.getElementById('result-box');
-            resultBox.classList.add('shake');
-            resultBox.style.color = "#ffcc00";
-            
+            const box = document.getElementById('result-1');
+            box.classList.add('shake');
+            box.style.color = "#00f2fe";
             setTimeout(() => {
-                resultBox.classList.remove('shake');
-                resultBox.style.color = "#ffffff";
-                resultBox.innerText = "🍺 ซ้ายมือกิน!";
+                box.classList.remove('shake');
+                box.style.color = "#ffffff";
+                box.innerText = "🍺 ซ้ายมือกิน!";
             }, 300);
         }
 
-        // ฟังก์ชันแอบกดจุดขวา ออก "👑 หาตัวตายตัวแทน"
         function triggerVictim() {
-            const resultBox = document.getElementById('result-box');
-            resultBox.classList.add('shake');
-            resultBox.style.color = "#ffcc00";
-            
+            const box = document.getElementById('result-1');
+            box.classList.add('shake');
+            box.style.color = "#00f2fe";
             setTimeout(() => {
-                resultBox.classList.remove('shake');
-                resultBox.style.color = "#ffffff";
-                resultBox.innerText = "👑 หาตัวตายตัวแทน";
+                box.classList.remove('shake');
+                box.style.color = "#ffffff";
+                box.innerText = "👑 หาตัวตายตัวแทน";
             }, 300);
+        }
+
+        // ================= เกมที่ 2 =================
+        let currentRotation = 0;
+        function spinBottle() {
+            const bottle = document.getElementById('bottle');
+            const extraSpin = Math.floor(Math.random() * 360) + 1440;
+            currentRotation += extraSpin;
+            bottle.style.transform = `rotate(${currentRotation}deg)`;
+        }
+
+        // ================= เกมที่ 3 =================
+        const suits = [
+            { symbol: "♠", color: "card-black" },
+            { symbol: "♥", color: "card-red" },
+            { symbol: "♦", color: "card-red" },
+            { symbol: "♣", color: "card-black" }
+        ];
+
+        const cardRanks = [
+            { val: "A", rule: "ดื่มคนเดียว 1 เพียว!" },
+            { val: "2", rule: "เลือกเพื่อน 1 คนมาดื่มเป็นเพื่อน" },
+            { val: "3", rule: "คนซ้ายมือกิน!" },
+            { val: "4", rule: "คนขวามือกิน!" },
+            { val: "5", rule: "ผู้ชายทุกคนในวงดื่ม!" },
+            { val: "6", rule: "ผู้หญิงทุกคนในวงดื่ม!" },
+            { val: "7", rule: "ใครได้ 9 ตาที่แล้ว ดื่ม!" },
+            { val: "8", rule: "หาบัดดี้ (เวลาเราดื่ม บัดดี้ต้องดื่มด้วย)" },
+            { val: "9", rule: "พัก 1 นาที" },
+            { val: "10", rule: "เล่นเกมส์นับ ดื่ม!" },
+            { val: "J", rule: "จับหน้าตัวเอง ใครทำตามช้าสุด ดื่ม!" },
+            { val: "Q", rule: "ห้ามคุยกับคนจั่วไพ่นี้ ใครเผลอคุย ดื่ม!" },
+            { val: "K", rule: "ราชาสั่งใครก็ได้ 1 คน หมดแก้ว!" }
+        ];
+
+        function renderCard(rankObj) {
+            const cardEl = document.getElementById('real-card');
+            const ruleEl = document.getElementById('card-rule');
+
+            cardEl.className = "playing-card card-back shake";
+            cardEl.innerHTML = "";
+            ruleEl.innerText = "กำลังเปิดไพ่... 🃏";
+
+            setTimeout(() => {
+                const randomSuit = suits[Math.floor(Math.random() * suits.length)];
+                cardEl.className = `playing-card ${randomSuit.color}`;
+                cardEl.innerHTML = `
+                    <div class="card-corner top-left">
+                        <span class="corner-val">${rankObj.val}</span>
+                        <span class="corner-suit">${randomSuit.symbol}</span>
+                    </div>
+                    <div class="card-center-suit">${randomSuit.symbol}</div>
+                    <div class="card-corner bottom-right">
+                        <span class="corner-val">${rankObj.val}</span>
+                        <span class="corner-suit">${randomSuit.symbol}</span>
+                    </div>
+                `;
+                ruleEl.innerText = rankObj.rule;
+            }, 350);
+        }
+
+        function drawCard() {
+            const randomRank = cardRanks[Math.floor(Math.random() * cardRanks.length)];
+            renderCard(randomRank);
+        }
+
+        function triggerCardQ() {
+            renderCard({ val: "Q", rule: "ห้ามคุยกับคนจั่วไพ่นี้ ใครเผลอคุย ดื่ม!" });
+        }
+
+        function triggerCardJ() {
+            renderCard({ val: "J", rule: "จับหน้าตัวเอง ใครทำตามช้าสุด ดื่ม!" });
+        }
+
+        // ================= เกมที่ 4 =================
+        const dicePatterns = {
+            1: [4],
+            2: [2, 6],
+            3: [2, 4, 6],
+            4: [0, 2, 6, 8],
+            5: [0, 2, 4, 6, 8],
+            6: [0, 2, 3, 5, 6, 8]
+        };
+
+        let isRolling = false;
+
+        function renderDiceFace(elementId, value) {
+            const diceEl = document.getElementById(elementId);
+            const activeIndices = dicePatterns[value];
+            const isRed = (value === 1 || value === 4);
+            let html = "";
+            for (let i = 0; i < 9; i++) {
+                if (activeIndices.includes(i)) {
+                    html += `<div class="pip active ${isRed ? 'red-pip' : ''}"></div>`;
+                } else {
+                    html += `<div class="pip"></div>`;
+                }
+            }
+            diceEl.innerHTML = html;
+        }
+
+        function rollDice(mode) {
+            if (isRolling) return;
+            isRolling = true;
+
+            const d1El = document.getElementById('dice-1');
+            const d2El = document.getElementById('dice-2');
+            const btnEl = document.getElementById('dice-btn');
+
+            btnEl.disabled = true;
+            d1El.classList.add('dice-roll-anim');
+            d2El.classList.add('dice-roll-anim');
+
+            const animInterval = setInterval(() => {
+                renderDiceFace('dice-1', Math.floor(Math.random() * 6) + 1);
+                renderDiceFace('dice-2', Math.floor(Math.random() * 6) + 1);
+            }, 80);
+
+            setTimeout(() => {
+                clearInterval(animInterval);
+                d1El.classList.remove('dice-roll-anim');
+                d2El.classList.remove('dice-roll-anim');
+
+                let finalD1, finalD2;
+                if (mode === 'high') {
+                    finalD1 = 6;
+                    finalD2 = 6;
+                } else if (mode === 'low') {
+                    finalD1 = 1;
+                    finalD2 = 1;
+                } else {
+                    finalD1 = Math.floor(Math.random() * 6) + 1;
+                    finalD2 = Math.floor(Math.random() * 6) + 1;
+                }
+
+                renderDiceFace('dice-1', finalD1);
+                renderDiceFace('dice-2', finalD2);
+
+                isRolling = false;
+                btnEl.disabled = false;
+            }, 650);
+        }
+
+        // ================= เกมที่ 5 =================
+        const wheelPrizes = [
+            "🍻 ดื่มเอง 1 แก้ว!",
+            "🥂 ชนแก้วกับคนข้างๆ",
+            "👑 สั่งเพื่อนดื่ม 1 แก้ว",
+            "💀 หาเพื่อนเล่นเกมส์1หรือ2คนใครแพ้ ดื่มหมดแก้ว!",
+            "😴 รอดตัว ปลอดภัย!",
+            "👉 ส่งต่อให้คนขวาทอยแทน",
+            "🔥 ดื่มเบิ้ล 2 แก้ว!",
+            "🔄 หมุนใหม่อีกรอบ"
+        ];
+
+        let wheelRotation = 0;
+        let isSpinningWheel = false;
+
+        function spinWheel() {
+            executeWheelSpin(null);
+        }
+
+        function triggerWheelSecret(type) {
+            executeWheelSpin(type);
+        }
+
+        function executeWheelSpin(forcedType) {
+            if (isSpinningWheel) return;
+            isSpinningWheel = true;
+
+            const wheelEl = document.getElementById('wheel');
+            const box = document.getElementById('result-5');
+            const btnEl = document.getElementById('wheel-btn');
+
+            btnEl.disabled = true;
+            box.classList.add('shake');
+            box.style.color = "#ffa502";
+            box.innerText = "กำลังหมุนวงล้อ... 🎡";
+
+            const extraSpin = Math.floor(Math.random() * 360) + 1440;
+            wheelRotation += extraSpin;
+            wheelEl.style.transform = `rotate(${wheelRotation}deg)`;
+
+            setTimeout(() => {
+                box.classList.remove('shake');
+                let idx;
+                if (forcedType === 'shot') {
+                    idx = 3; // หาเพื่อนเล่นเกมส์1หรือ2คนใครแพ้ ดื่มหมดแก้ว
+                } else if (forcedType === 'safe') {
+                    idx = 4; // รอดตัว
+                } else {
+                    idx = Math.floor(Math.random() * wheelPrizes.length);
+                }
+
+                box.style.color = "#ffffff";
+                box.innerText = wheelPrizes[idx];
+                isSpinningWheel = false;
+                btnEl.disabled = false;
+            }, 3000);
         }
     </script>
-
 </body>
 </html>
